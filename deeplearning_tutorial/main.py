@@ -10,7 +10,7 @@ tokenizer = get_tokenizer("basic_english")
 def yield_tokens(data_iter):
     for _, text in data_iter:
         yield tokenizer(text)
-breakpoint()
+
 vocab = build_vocab_from_iterator(yield_tokens(imdb), specials=["<unk>"])
 vocab.set_default_index(vocab["<unk>"])
 
