@@ -12,18 +12,6 @@ class IMDB:
 
     def __getitem__(self, idx):
         return self.data[idx]
-    
-    def __iter__(self):
-        return self
-    
-    def __next__(self):
-        if self.idx < len(self.data):
-            result = self.data[self.idx]
-            self.idx += 1
-            return result
-        else:
-            self.idx = 0
-            raise StopIteration
 
     @staticmethod
     def get_sample(path):
