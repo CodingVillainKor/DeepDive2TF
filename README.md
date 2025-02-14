@@ -14,4 +14,9 @@ Imcommit's lowest Transformer lecture <br />
 
 ## 2. Data
 
-TBU
+데이터 실습 코드 [링크](https://www.youtube.com/watch?v=_b-PK5CWWhk)
+
+1) `cd data_modularized`
+2) `python main.py`
+
+과제: [stanford imdb dataset](https://ai.stanford.edu/~amaas/data/sentiment/)을 다운받고 imdb.py를 수정해서 학습시키기
