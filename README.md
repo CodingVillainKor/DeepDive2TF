@@ -1,10 +1,12 @@
 # Deep-dive to Transformer!
 Imcommit's lowest Transformer lecture <br /> 
 
-## Data
-목표: dataset과 dataloader 설계 시 필요한 코드 학습
+## Model
+목표:
+1) model.py로 모듈화하고 main.py에서 import해오기
+2) 모델을 Transformer로 변경하기
 
-데이터 실습 코드 [링크](https://www.youtube.com/watch?v=_b-PK5CWWhk)
+모델 실습 영상: [링크](about:blank)
 
 과제: [stanford imdb dataset](https://ai.stanford.edu/~amaas/data/sentiment/)을 다운받아 `src` 폴더 안에 압축 풀기
 
