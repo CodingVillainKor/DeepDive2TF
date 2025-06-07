@@ -9,6 +9,7 @@ class Transformer(nn.Module):
         self.embedding_q = nn.Embedding(input_dim, hidden_dim)
         self.embedding_a = nn.Embedding(output_dim + 1, hidden_dim)
         self.pe = PositionalEncoding(hidden_dim)
+
         self.encoder_layers = nn.ModuleList()
         self.decoder_layers = nn.ModuleList()
         for i in range(n_layers):
@@ -38,6 +39,10 @@ class Transformer(nn.Module):
             tgt = layer(tgt, src)
 
         out = self.fc(tgt)
+
+        print(out.shape)
+        breakpoint()
+
         out = out[:, :-1, :].transpose(1, 2)
         loss = F.cross_entropy(out, tgt_idx, ignore_index=0)
         return loss
@@ -51,12 +56,22 @@ class Transformer(nn.Module):
 
         if tgt is None:
             tgt = torch.zeros(src.shape[0], 1, dtype=torch.long).to(src.device)
-        tgt = self.embedding_ko(tgt)
-        tgt = self.pe(tgt)
-        for layer in self.decoder_layers:
-            tgt = layer(tgt, src)
 
-        return self.fc(tgt)
+        for i in range(100):
+            tgt_emb = self.embedding_a(tgt)
+            tgt_emb = self.pe(tgt_emb)
+
+            for layer in self.decoder_layers:
+                tgt_emb = layer(tgt_emb, src)
+            
+            out = self.fc(tgt_emb)
+            out = out[:, -1:, :]
+            out = torch.argmax(out, dim=-1)
+            tgt = torch.cat([tgt, out], dim=1)
+        out = tgt[:, 1:]
+
+        return out
+
 
 
 class PositionalEncoding(nn.Module):
@@ -185,8 +200,8 @@ if __name__ == "__main__":
     model = Transformer(input_dim, output_dim, n_heads, n_layers, hidden_dim, dropout)
 
     # Dummy input data
-    src = torch.randint(0, input_dim, (32, 10))  # Batch size 32, sequence length 10
-    tgt = torch.randint(0, output_dim, (32, 10))  # Batch size 32, sequence length 10
+    src = torch.randint(0, input_dim, (1, 10))  # Batch size 32, sequence length 10
+    tgt = torch.randint(0, output_dim, (1, 10))  # Batch size 32, sequence length 10
 
     # Forward pass
     output = model(src, tgt)
@@ -194,4 +209,4 @@ if __name__ == "__main__":
 
     # Inference
     inferred_output = model.infer(src)
-    print("Inferred output shape:", inferred_output.shape)
+    print("Inferred output shape:", inferred_output)

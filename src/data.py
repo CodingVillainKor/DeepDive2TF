@@ -5,7 +5,7 @@ from transformers import PreTrainedTokenizerFast
 
 ds = load_dataset("Pradeep016/career-guidance-qa-dataset")
 
-tokenizer = PreTrainedTokenizerFast(tokenizer_file="tokenizer.json", pad_token="[PAD]")
+tokenizer = PreTrainedTokenizerFast(tokenizer_file="tokenizer1.json", pad_token="[PAD]")
 
 class Dataset:
     def __init__(self, dataset=ds, tokenizer=tokenizer):
