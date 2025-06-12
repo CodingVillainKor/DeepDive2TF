@@ -40,9 +40,6 @@ class Transformer(nn.Module):
 
         out = self.fc(tgt)
 
-        print(out.shape)
-        breakpoint()
-
         out = out[:, :-1, :].transpose(1, 2)
         loss = F.cross_entropy(out, tgt_idx, ignore_index=0)
         return loss
@@ -63,7 +60,7 @@ class Transformer(nn.Module):
 
             for layer in self.decoder_layers:
                 tgt_emb = layer(tgt_emb, src)
-            
+
             out = self.fc(tgt_emb)
             out = out[:, -1:, :]
             out = torch.argmax(out, dim=-1)
@@ -71,7 +68,6 @@ class Transformer(nn.Module):
         out = tgt[:, 1:]
 
         return out
-
 
 
 class PositionalEncoding(nn.Module):
@@ -108,16 +104,15 @@ class MHAttn(nn.Module):
         q = self.w_q(q)
         k = self.w_k(k)
         v = self.w_v(v)
-
-        q = q.view(q.shape[0], -1, self.n_heads, q.shape[-1] // self.n_heads).transpose(
-            1, 2
-        )
-        k = k.view(k.shape[0], -1, self.n_heads, k.shape[-1] // self.n_heads).transpose(
-            1, 2
-        )
-        v = v.view(v.shape[0], -1, self.n_heads, v.shape[-1] // self.n_heads).transpose(
-            1, 2
-        )
+        q = q.view(
+            q.shape[0], q.shape[1], self.n_heads, q.shape[-1] // self.n_heads
+        ).transpose(1, 2)
+        k = k.view(
+            k.shape[0], k.shape[1], self.n_heads, k.shape[-1] // self.n_heads
+        ).transpose(1, 2)
+        v = v.view(
+            v.shape[0], v.shape[1], self.n_heads, v.shape[-1] // self.n_heads
+        ).transpose(1, 2)
 
         attn = torch.matmul(q, k.transpose(-2, -1)) / (q.shape[-1] ** 0.5)
         if causal:
