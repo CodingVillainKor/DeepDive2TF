@@ -101,12 +101,13 @@ class MHAttn(nn.Module):
         self.n_heads = n_heads
 
     def forward(self, q, k, v, causal=False):
-        q = self.w_q(q)
+        q = self.w_q(q) # B, L, D
         k = self.w_k(k)
         v = self.w_v(v)
+        breakpoint()
         q = q.view(
             q.shape[0], q.shape[1], self.n_heads, q.shape[-1] // self.n_heads
-        ).transpose(1, 2)
+        ).transpose(1, 2) # B, 8, L, D // 8
         k = k.view(
             k.shape[0], k.shape[1], self.n_heads, k.shape[-1] // self.n_heads
         ).transpose(1, 2)
@@ -121,10 +122,10 @@ class MHAttn(nn.Module):
             )
             attn = attn.masked_fill(mask == 1, -1e9)
         attn = torch.softmax(attn, dim=-1)
-        out = torch.matmul(attn, v)
+        out = torch.matmul(attn, v) # B, 8, Lq, D // 8
 
         out = out.transpose(1, 2).contiguous()
-        out = out.view(out.shape[0], -1, out.shape[-1] * self.n_heads)
+        out = out.view(out.shape[0], -1, out.shape[-1] * self.n_heads) # B, Lq, D
         out = self.w_o(out)
 
         return out
