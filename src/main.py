@@ -16,8 +16,8 @@ m = Transformer(
 optim = torch.optim.Adam(m.parameters(), lr=0.0001)
 for e in range(100):
     for i, (question, answer) in enumerate(dl):
-        loss = m(question, answer)
         optim.zero_grad()
+        loss = m(question, answer)
         loss.backward()
         optim.step()
         print(f"\r{e} / {100} | loss = {loss:.3f}", end="")
