@@ -29,8 +29,9 @@ class Transformer(nn.Module):
     def forward(self, src, tgt):
         src = self.embedding_q(src)
         decoder_input = tgt[:, :-1]
-        tgt_idx = tgt[:, 1:]
+        true = tgt[:, 1:]
         tgt = self.embedding_a(decoder_input)
+        breakpoint()
         src = self.pe(src)
         tgt = self.pe(tgt)
         for layer in self.encoder_layers:
@@ -42,7 +43,7 @@ class Transformer(nn.Module):
         out = self.fc(tgt)
 
         out = out.transpose(1, 2)
-        loss = F.cross_entropy(out, tgt_idx, ignore_index=0)
+        loss = F.cross_entropy(out, true, ignore_index=0)
         return loss
 
     @torch.no_grad()
