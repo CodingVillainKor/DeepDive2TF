@@ -54,7 +54,7 @@ class Transformer(nn.Module):
         if tgt is None:
             tgt = torch.zeros(src.shape[0], 1, dtype=torch.long).to(src.device)
 
-        for i in range(100):
+        for i in range(44):
             tgt_emb = self.embedding_a(tgt)
             tgt_emb = self.pe(tgt_emb)
 
@@ -104,7 +104,6 @@ class MHAttn(nn.Module):
         q = self.w_q(q) # B, L, D
         k = self.w_k(k)
         v = self.w_v(v)
-        breakpoint()
         q = q.view(
             q.shape[0], q.shape[1], self.n_heads, q.shape[-1] // self.n_heads
         ).transpose(1, 2) # B, 8, L, D // 8

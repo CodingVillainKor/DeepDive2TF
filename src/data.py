@@ -9,7 +9,9 @@ tokenizer = PreTrainedTokenizerFast(tokenizer_file="tokenizer1.json", pad_token=
 
 class Dataset:
     def __init__(self, dataset=ds, tokenizer=tokenizer):
-        self.dataset = dataset["train"]
+        # dataset["train"] but just [:100]
+        self.dataset = dataset["train"].select(range(32))
+        
         self.tokenizer = tokenizer
 
     def __len__(self):
@@ -30,6 +32,10 @@ class Dataset:
 def collate_fn(batch):
     questions = [item["text"] for item in batch]
     answers = [item["label"] for item in batch]
+    # pad zero to each answer's beginning in answers
+    for answer in answers:
+        answer.insert(0, 0)
+
     max_length_question = max(len(text) for text in questions)
     max_length_answer = max(len(text) for text in answers)
     padded_questions = [text + [0] * (max_length_question - len(text)) for text in questions]
