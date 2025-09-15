@@ -31,7 +31,6 @@ class Transformer(nn.Module):
         decoder_input = tgt[:, :-1]
         true = tgt[:, 1:]
         tgt = self.embedding_a(decoder_input)
-        breakpoint()
         src = self.pe(src)
         tgt = self.pe(tgt)
         for layer in self.encoder_layers:
