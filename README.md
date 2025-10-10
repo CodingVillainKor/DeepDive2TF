@@ -20,3 +20,21 @@ Imcommit's lowest Transformer lecture <br />
 2) `python main.py`
 
 과제: [stanford imdb dataset](https://ai.stanford.edu/~amaas/data/sentiment/)을 다운받고 imdb.py를 수정해서 학습시키기
+
+## 3. Model(Transformer)
+
+모델 실습 코드 [링크](https://www.youtube.com/watch?v=dKhk_rqZmes)
+
+1) `git checkout tfdd_model`
+2) `cd src`
+3) `python main.py`
+
+과제: Transformer 내부 모듈의 입출력 구조 파악하기
+
+## 4. Training
+
+학습 실습 코드 [링크](https://www.youtube.com/watch?v=TgRimIlDGEc)
+
+1) `git checkout tfdd_train`
+2) `cd src`
+3) `python train_accelerate.py`
