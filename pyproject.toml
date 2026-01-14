@@ -1,0 +1,11 @@
+[project]
+name = "deepdive2tf"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy==1.26.4",
+    "torch==1.11.0",
+    "torchtext==0.12.0",
+]
